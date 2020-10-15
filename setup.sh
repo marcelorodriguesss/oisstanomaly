@@ -1,1 +1,1 @@
-apt update
+mkdir -pv /test

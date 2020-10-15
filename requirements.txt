@@ -1,4 +1,4 @@
 xarray
 matplotlib
 numpy
-cartopy
+# cartopy
