@@ -1,12 +1,12 @@
 import xarray as xr
-from numpy import squeeze
-from cartopy.util import add_cyclic_point
 import matplotlib as mpl
-from matplotlib.colors import BoundaryNorm, ListedColormap
 import cartopy as cart
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 import matplotlib.pyplot as plt
+from numpy import squeeze
+from cartopy.util import add_cyclic_point
+from matplotlib.colors import BoundaryNorm, ListedColormap
 
 def is_mon(month, n: int):
     """
@@ -19,15 +19,13 @@ def is_mon(month, n: int):
 
 def fix_data(da: xr.DataArray, psst=False):
 
-    # print(da)
-
     # lon 0:360 -> -180:180
 
     # https://stackoverflow.com/a/53471670
 
     da['_longitude'] = xr.where(da['longitude'] > 180,
-                            da['longitude'] - 360,
-                            da['longitude'])
+                                da['longitude'] - 360,
+                                da['longitude'])
 
     da = (
         da
@@ -58,22 +56,14 @@ def fix_data(da: xr.DataArray, psst=False):
 
 def getsstclim(clim, mon):
 
-    # sst_file = 'SST.ER.LAND.50-81.and.OIV2.82-0820.T42.nc'
+    sst_file = 'SST.ER.LAND.50-81.and.OIV2.82-0820.T42.nc'
 
-    sst_file = 'OBS-SST-1281-0920-T42.nc'
+    # sst_file = 'OBS-SST-1281-0920-T42.nc'
 
     with xr.open_dataset(sst_file) as dset:
 
-        print('\n***** DSET CLIM *****')
-        print(dset)
-        print('')
-
         iyear = clim.split('-')[0]
         fyear = clim.split('-')[1]
-
-        print(iyear)
-        print(fyear)
-        print(mon)
 
         sst_clim = dset.sst \
             .sel(time=is_mon(dset.sst['time.month'], mon)) \
@@ -86,15 +76,11 @@ def getsstclim(clim, mon):
 
 def getsstobs(year, mon):
 
-    # sst_file = 'SST.ER.LAND.50-81.and.OIV2.82-0820.T42.nc'
+    sst_file = 'SST.ER.LAND.50-81.and.OIV2.82-0820.T42.nc'
 
-    sst_file = 'OBS-SST-1281-0920-T42.nc'
+    # sst_file = 'OBS-SST-1281-0920-T42.nc'
 
     with xr.open_dataset(sst_file) as dset:
-
-        print('\n***** DSET OBS *****')
-        print(dset)
-        print('')
 
         sst_obs = dset.sst.sel(time=f'{year}-{mon}')
 
@@ -108,9 +94,6 @@ def getpsst(ncfile, l=1):
     psst_file = f'./check/{ncfile}'
 
     with xr.open_dataset(psst_file) as dset:
-
-        print('+++++++++')
-        print(dset)
 
         psst = dset.sst.isel(time=l-1)
 
@@ -140,16 +123,17 @@ def plotmap(arr, lon, lat, fig_title, pal='anom'):
     elif pal == 'diff':
 
         pal = ('#0033FF', '#0099FF', '#FFFFFF', '#FFCC00', '#FF3300')
-        clevs = [-0.1, -0.05, 0.05, 0.1]
+        clevs = [-1., -0.05, 0.05, 1.]
         orient = 'horizontal'
         shrink=0.45
         aspect=9
 
     else:
 
-        pal = ['#D204A9', '#B605C1', '#9406DF', '#7907F7', '#5A45F9', '#368FFB',
-               '#18CDFD', '#00F8E1', '#00E696', '#00D13C', '#0CC600', '#4CD500',
-               '#99E700', '#D8F600', '#FFE900', '#FFB400', '#FF7400', '#FF3F00']
+        pal = ['#D204A9', '#B605C1', '#9406DF', '#7907F7', '#5A45F9',
+               '#368FFB', '#18CDFD', '#00F8E1', '#00E696', '#00D13C',
+               '#0CC600', '#4CD500', '#99E700', '#D8F600', '#FFE900',
+               '#FFB400', '#FF7400', '#FF3F00']
         clevs = list(range(-2, 31, 2))
         orient = 'horizontal'
         shrink=1.
@@ -175,7 +159,7 @@ def plotmap(arr, lon, lat, fig_title, pal='anom'):
     ax.gridlines(crs=proj, linewidth=1.5, color='black', alpha=0.5,
                  linestyle='--', draw_labels=False)
 
-    parallels = list(range(-180, 180, 20))
+    parallels = list(range(-180, 181, 40))
     meridians = list(range(-90, 91, 20))
 
     ax.set_xticks(parallels, crs=proj)
@@ -186,7 +170,7 @@ def plotmap(arr, lon, lat, fig_title, pal='anom'):
     ax.add_feature(
         cart.feature.LAND,
         zorder=50,
-        edgecolor='k',  # #808080
+        edgecolor='k',  #808080
         facecolor='k'
     )
 
@@ -205,8 +189,8 @@ def plotmap(arr, lon, lat, fig_title, pal='anom'):
                 aspect=aspect
             )
 
-    # 35
-
     ax.set_title(fig_title, fontsize=12, weight='bold', loc='center')
 
     return fig_map
+
+#

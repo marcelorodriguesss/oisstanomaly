@@ -6,5 +6,6 @@ do
     ncrename -h -O -d lat,latitude $NC_FILE
     ncrename -h -O -v lon,longitude $NC_FILE
     ncrename -h -O -v lat,latitude $NC_FILE
+    echo $NC_FILE
 done
 
