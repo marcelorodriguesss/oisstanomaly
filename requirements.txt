@@ -1,9 +1,4 @@
 xarray
 matplotlib
 numpy
-<<<<<<< HEAD
 # cartopy
-=======
-proj
-cartopy
->>>>>>> 6c3eb765633903ef56a1a2c66881c5e95f217baa
