@@ -3,3 +3,4 @@ __pycache__
 *.dat
 *.nc
 *.tar
+pythonenv3.8
