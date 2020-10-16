@@ -81,7 +81,7 @@ def getsstobs(year, mon):
     # sst_file = 'https://psl.noaa.gov/thredds/dodsC/Datasets' \
     #     '/noaa.oisst.v2/sst.mnmean.nc'
 
-    sst_file - 'https://psl.noaa.gov/thredds/dodsC/Datasets' \
+    sst_file = 'https://psl.noaa.gov/thredds/dodsC/Datasets' \
         '/noaa.ersst.v5/sst.mnmean.nc'
 
     with xr.open_dataset(sst_file) as dset:
