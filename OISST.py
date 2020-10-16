@@ -1,9 +1,8 @@
 import streamlit as st
-from numpy import roll
 
 from utils import getsstobs, plotmap, getsstclim
 
-st.sidebar.header('NOAA Optimum Interpolation (OI) Sea Surface Temperature (SST) V2')
+st.sidebar.header('NOAA Extended Reconstructed Sea Surface Temperature (SST) V5')
 
 my_bar = st.sidebar.progress(0)
 
