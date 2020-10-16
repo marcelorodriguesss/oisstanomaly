@@ -56,12 +56,13 @@ def fix_data(da: xr.DataArray, psst=False):
 
 def getsstclim(clim, mon):
 
-    sst_file = 'https://psl.noaa.gov/thredds/dodsC/Datasets' \
-        '/noaa.oisst.v2/sst.mnmean.nc'
+    # sst_file = 'https://psl.noaa.gov/thredds/dodsC/Datasets' \
+    #     '/noaa.oisst.v2/sst.mnmean.nc'
+
+    sst_file - 'https://psl.noaa.gov/thredds/dodsC/Datasets' \
+        '/noaa.ersst.v5/sst.mnmean.nc'
 
     with xr.open_dataset(sst_file) as dset:
-
-        print(dset)
 
         iyear = clim.split('-')[0]
         fyear = clim.split('-')[1]
@@ -77,8 +78,11 @@ def getsstclim(clim, mon):
 
 def getsstobs(year, mon):
 
-    sst_file = 'https://psl.noaa.gov/thredds/dodsC/Datasets' \
-        '/noaa.oisst.v2/sst.mnmean.nc'
+    # sst_file = 'https://psl.noaa.gov/thredds/dodsC/Datasets' \
+    #     '/noaa.oisst.v2/sst.mnmean.nc'
+
+    sst_file - 'https://psl.noaa.gov/thredds/dodsC/Datasets' \
+        '/noaa.ersst.v5/sst.mnmean.nc'
 
     with xr.open_dataset(sst_file) as dset:
 
@@ -89,19 +93,6 @@ def getsstobs(year, mon):
         arr_obs, lat, lon = fix_data(sst_obs)
 
         return squeeze(arr_obs), lat, lon
-
-
-def getpsst(ncfile, l=1):
-
-    psst_file = f'./check/{ncfile}'
-
-    with xr.open_dataset(psst_file) as dset:
-
-        psst = dset.sst.isel(time=l-1)
-
-        arr, lat, lon = fix_data(psst, psst=True)
-
-        return squeeze(arr) - 273.15, lat, lon
 
 
 def plotmap(arr, lon, lat, fig_title, pal='anom'):
