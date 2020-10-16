@@ -1,6 +1,6 @@
 libgeos++-dev
-libgeos-3.6.2
-libgeos-dev
-libgeos-c1v5
+libgeos-*
+# libgeos-dev
+# libgeos-c1v5
 proj-bin
 proj-data
