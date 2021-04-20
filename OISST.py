@@ -13,7 +13,7 @@ clim = st.sidebar.radio(
 )
 
 # get obs e clim
-anom_year = str(st.sidebar.selectbox('ANOM. YEAR:', range(2020, 2010, -1), index=0))
+anom_year = str(st.sidebar.selectbox('ANOM. YEAR:', range(2021, 2010, -1), index=0))
 anom_mon = st.sidebar.selectbox('ANOM. MONTH:', list(range(1, 13)), index=0)
 sst_obs, lat, lon = getsstobs(anom_year, anom_mon)
 sst_clim, lat, lon = getsstclim(clim, anom_mon)
