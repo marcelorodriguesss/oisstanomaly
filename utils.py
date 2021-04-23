@@ -36,8 +36,7 @@ def fix_data(da: xr.DataArray, psst=False):
 
     da = da.rename({'_lon': 'lon'})
 
-    if psst:
-        da =  da.reindex(latitude=da.latitude[::-1])
+    da =  da.reindex(lat=da.lat[::-1])
 
     lat = da.coords['lat'].values
 
@@ -56,13 +55,15 @@ def fix_data(da: xr.DataArray, psst=False):
 
 def getsstclim(clim, mon):
 
-    # sst_file = 'https://psl.noaa.gov/thredds/dodsC/Datasets' \
-    #     '/noaa.oisst.v2/sst.mnmean.nc'
+    sst_file = 'https://psl.noaa.gov/thredds/dodsC/Datasets' \
+        '/noaa.oisst.v2/sst.mnmean.nc'
 
-    sst_file - 'https://psl.noaa.gov/thredds/dodsC/Datasets' \
-        '/noaa.ersst.v5/sst.mnmean.nc'
+    # sst_file = 'https://psl.noaa.gov/thredds/dodsC/Datasets' \
+        # '/noaa.ersst.v5/sst.mnmean.nc'
 
     with xr.open_dataset(sst_file) as dset:
+
+        print(dset)
 
         iyear = clim.split('-')[0]
         fyear = clim.split('-')[1]
@@ -78,15 +79,13 @@ def getsstclim(clim, mon):
 
 def getsstobs(year, mon):
 
-    # sst_file = 'https://psl.noaa.gov/thredds/dodsC/Datasets' \
-    #     '/noaa.oisst.v2/sst.mnmean.nc'
-
     sst_file = 'https://psl.noaa.gov/thredds/dodsC/Datasets' \
-        '/noaa.ersst.v5/sst.mnmean.nc'
+        '/noaa.oisst.v2/sst.mnmean.nc'
+
+    # sst_file = 'https://psl.noaa.gov/thredds/dodsC/Datasets' \
+        # '/noaa.ersst.v5/sst.mnmean.nc'
 
     with xr.open_dataset(sst_file) as dset:
-
-        print(dset)
 
         sst_obs = dset.sst.sel(time=f'{year}-{mon}')
 
@@ -167,7 +166,7 @@ def plotmap(arr, lon, lat, fig_title, pal='anom'):
         facecolor='k'
     )
 
-    ax.set_extent([-180, 180, -88, 88], proj)
+    ax.set_extent([-180, 180, -80, 80], proj)
 
     bar = fig_map.colorbar(
                 img,
@@ -181,6 +180,19 @@ def plotmap(arr, lon, lat, fig_title, pal='anom'):
                 shrink=shrink,
                 aspect=aspect
             )
+
+
+    bar.ax.tick_params(labelsize=11)
+
+    # fig_map.canvas.flush_events()
+
+    # ref: https://matplotlib.org/3.1.1/gallery/ticks_and_spines/colorbar_tick_labelling_demo.html
+    # bar.ax.set_yticklabels(
+    #     labels=bar.ax.get_yticklabels(),
+    #     fontsize=50, weight='bold'
+    # )
+
+    bar.set_label(label="(degC)", size=11, weight='bold')
 
     ax.set_title(fig_title, fontsize=12, weight='bold', loc='center')
 
